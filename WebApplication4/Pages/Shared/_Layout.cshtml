@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>@ViewData["Title"] - WebApplication4</title>
+	<link href="css/style.css" rel="stylesheet"  />
+</head>
+<script>
+		function toggleMobileMenu(){
+			document.querySelector('#menu').classList.toggle('active')
+			document.querySelector('.mobile-bar').classList.toggle('active')
+		}
+	</script>
+<body>
+<header>
+	<nav>
+		<ul id="menu">
+			<li>
+				<a href="#">Home</a>
+			</li>
+			<li>
+				<a href="#">About</a>
+			</li>
+			<li>
+				<a href="#">Features</a>
+			</li>
+			<li>
+				<a href="#">Contact</a>
+			</li>
+			
+                               	<ul class="navbar-nav">
+                               		@if (SignInManager.IsSignedIn(User))
+                               		{
+                               			<li class="nav-item">
+                               				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                               			</li>
+                               			<li class="nav-item">
+                               				<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                               					<button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                               				</form>
+                               			</li>
+                               		}
+                               		else
+                               		{
+                               			<li class="nav-item">
+                               				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                               			</li>
+                               			<li class="nav-item">
+                               				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                               			</li>
+                               		}
+                               	</ul>
+			
+			
+		</ul>
+	    
+		<div class="mobile-bar" onClick="toggleMobileMenu();"> 
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		
+	</nav>
+	
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer>
+    <div class="container">
+        &copy; 2023 - WebApplication4 - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
